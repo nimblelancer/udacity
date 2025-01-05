@@ -3,7 +3,7 @@ name: Frontend CI
 on:
   pull_request:
     paths:
-      - 'frontend/**'
+      - 'starter/frontend/**'
   workflow_dispatch:
 
 jobs:
@@ -14,8 +14,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: cd frontend && npm ci
-      - run: cd frontend && npm run lint
+      - run: cd starter/frontend && npm ci
+      - run: cd starter/frontend && npm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -24,8 +24,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: cd frontend && npm ci
-      - run: cd frontend && CI=true npm test
+      - run: cd starter/frontend && npm ci
+      - run: cd starter/frontend && CI=true npm test
 
   build:
     needs: [lint, test]
@@ -35,5 +35,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: cd frontend && npm ci
-      - run: cd frontend && npm run build
+      - run: cd starter/frontend && npm ci
+      - run: cd starter/frontend && npm run build

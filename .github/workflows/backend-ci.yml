@@ -3,7 +3,7 @@ name: Backend CI
 on:
   pull_request:
     paths:
-      - 'backend/**'
+      - 'starter/backend/**'
   workflow_dispatch:
 
 jobs:
@@ -11,20 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd backend && pipenv install --dev
-      - run: cd backend && pipenv run lint
+      - run: cd starter/backend && pipenv install --dev
+      - run: cd starter/backend && pipenv run lint
 
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd backend && pipenv install --dev
-      - run: cd backend && pipenv run test
+      - run: cd starter/backend && pipenv install --dev
+      - run: cd starter/backend && pipenv run test
 
   build:
     needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd backend && pipenv install --dev
-      - run: cd backend && docker build -t mp-backend:latest .
+      - run: cd starter/backend && pipenv install --dev
+      - run: cd starter/backend && docker build -t mp-backend:latest .

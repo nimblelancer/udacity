@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/**'
+      - 'starter/frontend/**'
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd frontend && docker build -t ${{ secrets.ECR_REPO_URL }}:frontend-${{ github.sha }} .
+      - run: cd starter/frontend && docker build -t ${{ secrets.ECR_REPO_URL }}:frontend-${{ github.sha }} .
       - run: aws eks update-kubeconfig --region us-east-1 --name your-cluster-name
-      - run: cd frontend/k8s && kustomize edit set image frontend=${{ secrets.ECR_REPO_URL }}:frontend-${{ github.sha }}
-      - run: cd frontend/k8s && kustomize build | kubectl apply -f -
+      - run: cd starter/frontend/k8s && kustomize edit set image frontend=${{ secrets.ECR_REPO_URL }}:frontend-${{ github.sha }}
+      - run: cd starter/frontend/k8s && kustomize build | kubectl apply -f -

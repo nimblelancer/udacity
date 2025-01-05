@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'backend/**'
+      - 'starter/backend/**'
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd backend && docker build -t ${{ secrets.ECR_REPO_URL }}:backend-${{ github.sha }} .
+      - run: cd starter/backend && docker build -t ${{ secrets.ECR_REPO_URL }}:backend-${{ github.sha }} .
       - run: aws eks update-kubeconfig --region us-east-1 --name your-cluster-name
-      - run: cd backend/k8s && kustomize edit set image backend=${{ secrets.ECR_REPO_URL }}:backend-${{ github.sha }}
-      - run: cd backend/k8s && kustomize build | kubectl apply -f -
+      - run: cd starter/backend/k8s && kustomize edit set image backend=${{ secrets.ECR_REPO_URL }}:backend-${{ github.sha }}
+      - run: cd starter/backend/k8s && kustomize build | kubectl apply -f -
