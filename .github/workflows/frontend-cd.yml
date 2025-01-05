@@ -1,0 +1,19 @@
+name: Frontend CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd frontend && docker build -t ${{ secrets.ECR_REPO_URL }}:frontend-${{ github.sha }} .
+      - run: aws eks update-kubeconfig --region us-east-1 --name your-cluster-name
+      - run: cd frontend/k8s && kustomize edit set image frontend=${{ secrets.ECR_REPO_URL }}:frontend-${{ github.sha }}
+      - run: cd frontend/k8s && kustomize build | kubectl apply -f -
